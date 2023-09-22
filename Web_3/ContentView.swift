@@ -13,7 +13,6 @@ import Social
 import MediaPlayer
 
 // Import necessary libraries and frameworks. Some of the dependencies include SwiftUI, SwiftSoup, AVFoundation, MessageUI, Social, and MediaPlayer.
-
 struct ContentView: View {
     // Define the main content view of the application.
     
