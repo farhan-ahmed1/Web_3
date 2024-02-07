@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D86275F32B7312CE00BBB0E3 /* SpeechSynthesizerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86275F22B7312CE00BBB0E3 /* SpeechSynthesizerManager.swift */; };
+		D86275F52B73130F00BBB0E3 /* ContentExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86275F42B73130F00BBB0E3 /* ContentExtractor.swift */; };
 		DE07E1412A3D7DFC00CB2966 /* Web_3App.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE07E1402A3D7DFC00CB2966 /* Web_3App.swift */; };
 		DE07E1432A3D7DFC00CB2966 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE07E1422A3D7DFC00CB2966 /* ContentView.swift */; };
 		DE07E1452A3D7DFE00CB2966 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE07E1442A3D7DFE00CB2966 /* Assets.xcassets */; };
@@ -15,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D86275F22B7312CE00BBB0E3 /* SpeechSynthesizerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechSynthesizerManager.swift; sourceTree = "<group>"; };
+		D86275F42B73130F00BBB0E3 /* ContentExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentExtractor.swift; sourceTree = "<group>"; };
 		DE07E13D2A3D7DFC00CB2966 /* Web_3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Web_3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE07E1402A3D7DFC00CB2966 /* Web_3App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web_3App.swift; sourceTree = "<group>"; };
 		DE07E1422A3D7DFC00CB2966 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -54,6 +58,8 @@
 		DE07E13F2A3D7DFC00CB2966 /* Web_3 */ = {
 			isa = PBXGroup;
 			children = (
+				D86275F22B7312CE00BBB0E3 /* SpeechSynthesizerManager.swift */,
+				D86275F42B73130F00BBB0E3 /* ContentExtractor.swift */,
 				DE2084852A48D2BE00E64172 /* Web-3-Info.plist */,
 				DE07E1402A3D7DFC00CB2966 /* Web_3App.swift */,
 				DE07E1422A3D7DFC00CB2966 /* ContentView.swift */,
@@ -147,6 +153,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D86275F52B73130F00BBB0E3 /* ContentExtractor.swift in Sources */,
+				D86275F32B7312CE00BBB0E3 /* SpeechSynthesizerManager.swift in Sources */,
 				DE07E1432A3D7DFC00CB2966 /* ContentView.swift in Sources */,
 				DE07E1412A3D7DFC00CB2966 /* Web_3App.swift in Sources */,
 			);

@@ -27,6 +27,7 @@ struct ContentView: View {
     @State private var recentSearches: [(url: String, title: String)] = [] // Store recent search history.
     @State private var settings = Settings() // Store user settings.
     @State private var folders: [Folder] = [] // Store folders for organizing pages.
+    @State private var isSpeechPaused: Bool = false
     @Environment(\.colorScheme) var colorScheme // Get the color scheme (light/dark) from the environment.
     
     init() {
@@ -67,7 +68,10 @@ struct ContentView: View {
             NavigationView {
                 List {
                     ForEach(pages, id: \.title) { page in
-                        NavigationLink(destination: PageView(page: page)) {
+                        NavigationLink(destination: PageView(page: page, playAction: {
+                            // This closure captures 'self' to call playMedia from ContentView
+                            self.toggleSpeech(for: page)
+                        }, isSpeechPaused: $isSpeechPaused)) {
                             Text(page.title)
                                 .font(.subheadline)
                                 .bold()
@@ -130,24 +134,6 @@ struct ContentView: View {
         .preferredColorScheme(settings.darkMode ? .dark : .light) // Apply the user's preferred color scheme.
     }
     
-    func playMedia() {
-        // Function to play media from a URL.
-        
-        // Set up the player with the URL entered by the user
-        if let url = URL(string: searchURL) {
-            let playerItem = AVPlayerItem(url:url)
-            player.replaceCurrentItem(with : playerItem )
-        }
-        
-        // Start playback
-        player.play()
-    }
-    
-    func pauseMedia() {
-        // Function to pause media playback.
-        player.pause()
-    }
-    
     func extractTitleAndParagraphs(from url: String) {
         // Function to extract web page title and paragraphs from a given URL.
         
@@ -193,19 +179,44 @@ struct ContentView: View {
         task.resume()
     }
     
+    func playAndSpeakExtractedContent(for page: Page) {
+        let extractedText = page.paragraphs.joined(separator: "\n")
+        speak(extractedText)
+    }
+
+
     func speak(_ text: String) {
-        // Function to speak text using the speech synthesizer.
-        
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playback)
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio, options: [])
+            try AVAudioSession.sharedInstance().setActive(true)
         } catch {
-            print("Failed to set AVAudioSession category:", error)
+            print("Failed to setup AVAudioSession: \(error)")
+            return
         }
         
         let utterance = AVSpeechUtterance(string: text)
-        utterance.rate = settings.speechRate
+        utterance.rate = settings.speechRate // Ensure this rate is appropriate.
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US") // Adjust language as necessary.
         speechSynthesizer.speak(utterance)
     }
+    
+    func toggleSpeech(for page: Page) {
+        if speechSynthesizer.isSpeaking {
+            if isSpeechPaused {
+                speechSynthesizer.continueSpeaking()
+                isSpeechPaused = false
+            } else {
+                speechSynthesizer.pauseSpeaking(at: .immediate)
+                isSpeechPaused = true
+            }
+        } else {
+            playAndSpeakExtractedContent(for: page)
+            isSpeechPaused = false
+        }
+    }
+
+
+
     
     func deletePage(at offsets: IndexSet) {
         // Function to delete a page at specified offsets.
@@ -277,7 +288,10 @@ struct ContentView: View {
     
     struct PageView: View {
         let page: Page // Represents a page to be displayed.
-        
+        var playAction: () -> Void // Closure to be called to play media
+        @Binding var isSpeechPaused: Bool  // Add this line
+
+
         var body: some View {
             ScrollView {
                 VStack(alignment: .leading) {
@@ -292,9 +306,15 @@ struct ContentView: View {
                     }
                 }.padding()
             }
+            .navigationBarItems(trailing: Button(action: playAction) {
+                Image(systemName: isSpeechPaused ? "play.circle" : "pause.circle")
+                    .resizable()
+                    .frame(width: 24, height: 24)
+            })
+            .navigationTitle(page.title)
         }
     }
-    
+
     struct Page: Codable {
         let title: String // Title of the page.
         let paragraphs: [String] // Paragraphs of text within the page.
